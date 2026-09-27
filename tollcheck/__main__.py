@@ -3,6 +3,7 @@
   python -m tollcheck extract region.osm -o data/booths.csv
   python -m tollcheck pairs data/booths.csv -o output/          # plazas.csv, pairs.csv, map.html
   python -m tollcheck verify output/plazas.csv output/pairs.csv -o output/ --model llama3
+  python -m tollcheck site data/booths.csv -o docs --booths-only   # static page for GitHub Pages
 """
 import argparse
 import os
@@ -58,6 +59,15 @@ def cmd_verify(a):
     print(f"{len(final)} of {len(pairs)} pairs have both plazas verified as real")
 
 
+def cmd_site(a):
+    from tollcheck.site import build_site
+
+    booths = load_booths(a.booths, a.booths_only)
+    s = build_site(booths, a.out, region=a.region, km=a.km, radius_km=a.plaza_radius)
+    print(f"{s['n_booths']} booths -> {s['n_plazas']} plazas -> {s['n_pairs']} pairs; "
+          f"wrote {a.out}/index.html")
+
+
 def main(argv=None):
     p = argparse.ArgumentParser(prog="tollcheck")
     sub = p.add_subparsers(dest="cmd", required=True)
@@ -79,6 +89,14 @@ def main(argv=None):
     v.add_argument("-o", "--out", default="output")
     v.add_argument("--model", default="llama3")
     v.set_defaults(fn=cmd_verify)
+    w = sub.add_parser("site", help="booth CSV -> static results page (GitHub Pages)")
+    w.add_argument("booths")
+    w.add_argument("-o", "--out", default="docs")
+    w.add_argument("--region", default="North-Eastern zone, India (OpenStreetMap)")
+    w.add_argument("--km", type=float, default=distance.RULE_KM)
+    w.add_argument("--plaza-radius", type=float, default=distance.PLAZA_RADIUS_KM)
+    w.add_argument("--booths-only", action="store_true")
+    w.set_defaults(fn=cmd_site)
     a = p.parse_args(argv)
     a.fn(a)
 

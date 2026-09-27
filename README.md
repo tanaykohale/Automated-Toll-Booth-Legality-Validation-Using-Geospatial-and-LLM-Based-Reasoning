@@ -4,6 +4,8 @@ Flags national-highway toll plazas that sit closer together than the **60 km** s
 NH fee rules, using OpenStreetMap data, then checks each suspect plaza against the web with a
 locally hosted LLM (Ollama).
 
+**🌐 Live results page: [tanaykohale.github.io/Automated-Toll-Booth-Legality-Validation-Using-Geospatial-and-LLM-Based-Reasoning](https://tanaykohale.github.io/Automated-Toll-Booth-Legality-Validation-Using-Geospatial-and-LLM-Based-Reasoning/)** — interactive map + tables (built from `docs/`).
+
 ![Plaza pairs closer than 60 km](examples/pairs.png)
 
 ## Result on the sample region (OSM North-Eastern zone extract)
@@ -55,6 +57,11 @@ python -m tollcheck pairs data/booths.csv -o output/ --booths-only
 python -m tollcheck verify output/plazas.csv output/pairs.csv -o output/ --model llama3
 ```
 
+Rebuild the static results page (served by GitHub Pages from `docs/`):
+```bash
+python -m tollcheck site data/booths.csv -o docs --booths-only --region "North-Eastern zone, India"
+```
+
 Options: `--km 60` (threshold), `--plaza-radius 1.0` (km), `--booths-only` (ignore gantries).
 
 ## Tests
@@ -72,7 +79,8 @@ Python · pandas · lxml · Haversine · Selenium · Ollama (local LLM) · Leafl
 
 ## Repository layout
 ```
-tollcheck/            extract.py · distance.py · verify.py · report.py · __main__.py (CLI)
+tollcheck/            extract.py · distance.py · verify.py · report.py · site.py · __main__.py (CLI)
+docs/                 static results page for GitHub Pages
 data/                 north_eastern_zone_booths.csv (sample extract output)
 examples/             outputs for the sample region
 notebooks/            original exploration notebooks
