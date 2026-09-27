@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6">
+  <node id="1" lat="26.0000000" lon="91.0000000">
+    <tag k="barrier" v="toll_booth"/><tag k="name" v="Alpha Toll Plaza"/>
+  </node>
+  <node id="2" lat="26.0001000" lon="91.0001000">
+    <tag k="barrier" v="toll_booth"/>
+  </node>
+  <node id="3" lat="26.1000000" lon="91.0000000">
+    <tag k="highway" v="toll_gantry"/>
+  </node>
+  <node id="4" lat="27.0000000" lon="91.0000000">
+    <tag k="barrier" v="gate"/>
+  </node>
+  <node id="5" lat="27.5000000" lon="91.0000000"/>
+  <way id="10"><nd ref="1"/><nd ref="3"/><tag k="highway" v="trunk"/></way>
+</osm>
